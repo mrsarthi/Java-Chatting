@@ -27,22 +27,6 @@ This is a simple chatting application implemented in Java using Swing for the gr
 - Java Development Kit (JDK)
 - Swing Library
 
-## File Structure
-
-The file structure of the project is as follows:
-
-chatting/
-│
-├── application/
-│ ├── Server.java
-│ └── Client.java
-│
-└── icons/
-├── 1.png
-├── 3.png
-├── 3icon.png
-├── phone.png
-└── video.png
 
 ## License
 
