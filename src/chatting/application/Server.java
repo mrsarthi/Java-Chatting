@@ -9,17 +9,15 @@ import java.text.*;
 import java.net.*;
 import java.io.*;
 
-public class Client implements ActionListener {
+public class Server implements ActionListener {
 
     JTextField text;
-    static JPanel a1;
+    JPanel a1;
     static Box vertical = Box.createVerticalBox();
-
     static JFrame f = new JFrame();
-
     static DataOutputStream dout;
 
-    Client() {
+    Server() {
 
         f.setLayout(null);
 
@@ -42,7 +40,7 @@ public class Client implements ActionListener {
             }
         });
 
-        ImageIcon i4 = new ImageIcon(ClassLoader.getSystemResource("icons/2.png"));
+        ImageIcon i4 = new ImageIcon(ClassLoader.getSystemResource("icons/1.png"));
         Image i5 = i4.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT);
         ImageIcon i6 = new ImageIcon(i5);
         JLabel profile = new JLabel(i6);
@@ -70,7 +68,7 @@ public class Client implements ActionListener {
         morevert.setBounds(420, 20, 10, 25);
         p1.add(morevert);
 
-        JLabel name = new JLabel("Bunty");
+        JLabel name = new JLabel("Gaitonde");
         name.setBounds(110, 15, 100, 18);
         name.setForeground(Color.WHITE);
         name.setFont(new Font("SAN_SERIF", Font.BOLD, 18));
@@ -100,7 +98,7 @@ public class Client implements ActionListener {
         f.add(send);
 
         f.setSize(450, 700);
-        f.setLocation(800, 50);
+        f.setLocation(200, 50);
         f.setUndecorated(true);
         f.getContentPane().setBackground(Color.WHITE);
 
@@ -158,26 +156,24 @@ public class Client implements ActionListener {
     }
 
     public static void main(String[] args) {
-        new Client();
+        new Server();
 
         try {
-            Socket s = new Socket("127.0.0.1", 6001);
-            DataInputStream din = new DataInputStream(s.getInputStream());
-            dout = new DataOutputStream(s.getOutputStream());
-
+            ServerSocket skt = new ServerSocket(6001);
             while (true) {
-                a1.setLayout(new BorderLayout());
-                String msg = din.readUTF();
-                JPanel panel = formatLabel(msg);
+                Socket s = skt.accept();
+                DataInputStream din = new DataInputStream(s.getInputStream());
+                dout = new DataOutputStream(s.getOutputStream());
 
-                JPanel left = new JPanel(new BorderLayout());
-                left.add(panel, BorderLayout.LINE_START);
-                vertical.add(left);
+                while (true) {
+                    String msg = din.readUTF();
+                    JPanel panel = formatLabel(msg);
 
-                vertical.add(Box.createVerticalStrut(15));
-                a1.add(vertical, BorderLayout.PAGE_START);
-
-                f.validate();
+                    JPanel left = new JPanel(new BorderLayout());
+                    left.add(panel, BorderLayout.LINE_START);
+                    vertical.add(left);
+                    f.validate();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
